@@ -10,7 +10,10 @@ export default function Header() {
         Dink Nolen III
       </Link>
       <nav className="flex gap-6 sm:gap-8 text-sm text-stone-500">
-        <Link href="/gallery" className="hover:text-stone-900 transition-colors">
+        <Link
+          href="/gallery"
+          className="hover:text-stone-900 transition-colors"
+        >
           Work
         </Link>
         <Link href="/about" className="hover:text-stone-900 transition-colors">

@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
   const artwork = await client.fetch<CheckoutArtwork | null>(
     artworkForCheckoutQuery,
-    { slug },
+    { slug }
   );
 
   if (!artwork) {
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
   if (!artwork.forSale || artwork.sold || !artwork.price) {
     return NextResponse.json(
       { error: "Artwork is not available for purchase" },
-      { status: 409 },
+      { status: 409 }
     );
   }
 
