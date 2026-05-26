@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
 import { client } from "@/sanity/lib/client";
 import { artworkBySlugQuery, allArtworksQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
@@ -14,7 +15,7 @@ type Artwork = {
   dimensions?: string;
   year?: number;
   category?: { title: string };
-  description?: object[];
+  description?: PortableTextBlock[];
   forSale?: boolean;
   price?: number;
   sold?: boolean;
