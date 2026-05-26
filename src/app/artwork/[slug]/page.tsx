@@ -22,7 +22,8 @@ type Artwork = {
 };
 
 export async function generateStaticParams() {
-  const artworks: { slug: { current: string } }[] = await client.fetch(allArtworksQuery);
+  const artworks: { slug: { current: string } }[] =
+    await client.fetch(allArtworksQuery);
   return artworks.map((a) => ({ slug: a.slug.current }));
 }
 
@@ -32,11 +33,15 @@ export default async function ArtworkPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const artwork: Artwork | null = await client.fetch(artworkBySlugQuery, { slug });
+  const artwork: Artwork | null = await client.fetch(artworkBySlugQuery, {
+    slug,
+  });
 
   if (!artwork) notFound();
 
-  const meta = [artwork.medium, artwork.dimensions, artwork.year].filter(Boolean).join(" · ");
+  const meta = [artwork.medium, artwork.dimensions, artwork.year]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <main>
@@ -45,9 +50,15 @@ export default async function ArtworkPage({
           Dink Nolen III
         </a>
         <nav className="flex gap-8 text-sm text-stone-500">
-          <a href="/#work" className="hover:text-stone-900 transition-colors">Work</a>
-          <a href="/about" className="hover:text-stone-900 transition-colors">About</a>
-          <a href="/contact" className="hover:text-stone-900 transition-colors">Contact</a>
+          <a href="/#work" className="hover:text-stone-900 transition-colors">
+            Work
+          </a>
+          <a href="/about" className="hover:text-stone-900 transition-colors">
+            About
+          </a>
+          <a href="/contact" className="hover:text-stone-900 transition-colors">
+            Contact
+          </a>
         </nav>
       </header>
 
@@ -83,7 +94,9 @@ export default async function ArtworkPage({
                 {artwork.category.title}
               </p>
             )}
-            <h1 className="font-serif text-4xl text-stone-900 mb-3">{artwork.title}</h1>
+            <h1 className="font-serif text-4xl text-stone-900 mb-3">
+              {artwork.title}
+            </h1>
             {meta && <p className="text-stone-500 text-sm mb-8">{meta}</p>}
 
             {artwork.description && artwork.description.length > 0 && (
@@ -94,14 +107,20 @@ export default async function ArtworkPage({
 
             {artwork.forSale && !artwork.sold && artwork.price && (
               <div className="border-t border-stone-200 pt-6">
-                <p className="text-xs uppercase tracking-widest text-stone-400 mb-2">Available</p>
-                <p className="font-serif text-3xl text-stone-900">${artwork.price.toLocaleString()}</p>
+                <p className="text-xs uppercase tracking-widest text-stone-400 mb-2">
+                  Available
+                </p>
+                <p className="font-serif text-3xl text-stone-900">
+                  ${artwork.price.toLocaleString()}
+                </p>
               </div>
             )}
 
             {artwork.forSale && artwork.sold && (
               <div className="border-t border-stone-200 pt-6">
-                <p className="text-xs uppercase tracking-widest text-stone-400">Sold</p>
+                <p className="text-xs uppercase tracking-widest text-stone-400">
+                  Sold
+                </p>
               </div>
             )}
           </div>

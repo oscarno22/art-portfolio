@@ -1,6 +1,10 @@
 import Image from "next/image";
 import { client } from "@/sanity/lib/client";
-import { allArtworksQuery, artworksByCategoryQuery, allCategoriesQuery } from "@/sanity/lib/queries";
+import {
+  allArtworksQuery,
+  artworksByCategoryQuery,
+  allCategoriesQuery,
+} from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 
 type Artwork = {
@@ -39,15 +43,26 @@ export default async function GalleryPage({
           Dink Nolen III
         </a>
         <nav className="flex gap-8 text-sm text-stone-500">
-          <a href="/gallery" className="hover:text-stone-900 transition-colors text-stone-900">Work</a>
-          <a href="/about" className="hover:text-stone-900 transition-colors">About</a>
-          <a href="/contact" className="hover:text-stone-900 transition-colors">Contact</a>
+          <a
+            href="/gallery"
+            className="hover:text-stone-900 transition-colors text-stone-900"
+          >
+            Work
+          </a>
+          <a href="/about" className="hover:text-stone-900 transition-colors">
+            About
+          </a>
+          <a href="/contact" className="hover:text-stone-900 transition-colors">
+            Contact
+          </a>
         </nav>
       </header>
 
       <div className="px-8 py-12 max-w-7xl mx-auto">
         <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
-          <p className="text-xs uppercase tracking-widest text-stone-400">Work</p>
+          <p className="text-xs uppercase tracking-widest text-stone-400">
+            Work
+          </p>
 
           {categories.length > 0 && (
             <div className="flex gap-2 flex-wrap">
@@ -79,15 +94,24 @@ export default async function GalleryPage({
         </div>
 
         {artworks.length === 0 ? (
-          <p className="text-stone-400 text-center py-24">No works in this category yet.</p>
+          <p className="text-stone-400 text-center py-24">
+            No works in this category yet.
+          </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {artworks.map((artwork) => (
-              <a key={artwork._id} href={`/artwork/${artwork.slug.current}`} className="group">
+              <a
+                key={artwork._id}
+                href={`/artwork/${artwork.slug.current}`}
+                className="group"
+              >
                 <div className="aspect-[4/5] bg-stone-100 overflow-hidden mb-4">
                   {artwork.mainImage ? (
                     <Image
-                      src={urlFor(artwork.mainImage).width(600).height(750).url()}
+                      src={urlFor(artwork.mainImage)
+                        .width(600)
+                        .height(750)
+                        .url()}
                       alt={artwork.mainImage.alt ?? artwork.title}
                       width={600}
                       height={750}

@@ -26,11 +26,11 @@ npm run lint     # ESLint
 
 Copy `.env.local.example` → `.env.local` and fill in values. Required:
 
-| Variable | Purpose |
-|---|---|
+| Variable                        | Purpose                                   |
+| ------------------------------- | ----------------------------------------- |
 | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID (from sanity.io/manage) |
-| `NEXT_PUBLIC_SANITY_DATASET` | Defaults to `production` |
-| `SANITY_API_READ_TOKEN` | Server-side draft/preview fetching |
+| `NEXT_PUBLIC_SANITY_DATASET`    | Defaults to `production`                  |
+| `SANITY_API_READ_TOKEN`         | Server-side draft/preview fetching        |
 
 ## Sanity setup
 
