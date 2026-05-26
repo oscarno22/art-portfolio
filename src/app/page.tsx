@@ -2,6 +2,7 @@ import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import { featuredArtworksQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
+import Header from "@/components/Header";
 
 type Artwork = {
   _id: string;
@@ -17,22 +18,7 @@ export default async function Home() {
 
   return (
     <main>
-      <header className="px-8 py-6 flex items-center justify-between border-b border-stone-200">
-        <span className="font-serif text-xl tracking-wide text-stone-900">
-          Dink Nolen III
-        </span>
-        <nav className="flex gap-8 text-sm text-stone-500">
-          <a href="/gallery" className="hover:text-stone-900 transition-colors">
-            Work
-          </a>
-          <a href="/about" className="hover:text-stone-900 transition-colors">
-            About
-          </a>
-          <a href="/contact" className="hover:text-stone-900 transition-colors">
-            Contact
-          </a>
-        </nav>
-      </header>
+      <Header />
 
       <section className="px-8 pt-24 pb-16 text-center">
         <p className="text-xs uppercase tracking-widest text-stone-400 mb-5">
@@ -55,7 +41,7 @@ export default async function Home() {
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {artworks.map((artwork) => (
+            {artworks.map((artwork, index) => (
               <a
                 key={artwork._id}
                 href={`/artwork/${artwork.slug.current}`}
@@ -72,6 +58,7 @@ export default async function Home() {
                       width={600}
                       height={750}
                       className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                      priority={index === 0}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-stone-300 text-sm italic">

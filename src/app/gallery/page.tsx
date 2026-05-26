@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Header from "@/components/Header";
 import { client } from "@/sanity/lib/client";
 import {
   allArtworksQuery,
@@ -38,25 +39,7 @@ export default async function GalleryPage({
 
   return (
     <main>
-      <header className="px-8 py-6 flex items-center justify-between border-b border-stone-200">
-        <a href="/" className="font-serif text-xl tracking-wide text-stone-900">
-          Dink Nolen III
-        </a>
-        <nav className="flex gap-8 text-sm text-stone-500">
-          <a
-            href="/gallery"
-            className="hover:text-stone-900 transition-colors text-stone-900"
-          >
-            Work
-          </a>
-          <a href="/about" className="hover:text-stone-900 transition-colors">
-            About
-          </a>
-          <a href="/contact" className="hover:text-stone-900 transition-colors">
-            Contact
-          </a>
-        </nav>
-      </header>
+      <Header />
 
       <div className="px-8 py-12 max-w-7xl mx-auto">
         <div className="flex items-end justify-between mb-10 flex-wrap gap-4">

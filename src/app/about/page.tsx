@@ -1,22 +1,9 @@
+import Header from "@/components/Header";
+
 export default function AboutPage() {
   return (
     <main>
-      <header className="px-8 py-6 flex items-center justify-between border-b border-stone-200">
-        <a href="/" className="font-serif text-xl tracking-wide text-stone-900">
-          Dink Nolen III
-        </a>
-        <nav className="flex gap-8 text-sm text-stone-500">
-          <a href="/#work" className="hover:text-stone-900 transition-colors">
-            Work
-          </a>
-          <a href="/about" className="hover:text-stone-900 transition-colors">
-            About
-          </a>
-          <a href="/contact" className="hover:text-stone-900 transition-colors">
-            Contact
-          </a>
-        </nav>
-      </header>
+      <Header />
 
       <div className="px-8 py-20 max-w-2xl mx-auto">
         <p className="text-xs uppercase tracking-widest text-stone-400 mb-5">

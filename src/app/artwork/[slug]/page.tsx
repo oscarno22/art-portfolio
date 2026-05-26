@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
+import Header from "@/components/Header";
 import type { PortableTextBlock } from "@portabletext/types";
 import { client } from "@/sanity/lib/client";
 import { artworkBySlugQuery, allArtworksQuery } from "@/sanity/lib/queries";
@@ -45,22 +46,7 @@ export default async function ArtworkPage({
 
   return (
     <main>
-      <header className="px-8 py-6 flex items-center justify-between border-b border-stone-200">
-        <a href="/" className="font-serif text-xl tracking-wide text-stone-900">
-          Dink Nolen III
-        </a>
-        <nav className="flex gap-8 text-sm text-stone-500">
-          <a href="/#work" className="hover:text-stone-900 transition-colors">
-            Work
-          </a>
-          <a href="/about" className="hover:text-stone-900 transition-colors">
-            About
-          </a>
-          <a href="/contact" className="hover:text-stone-900 transition-colors">
-            Contact
-          </a>
-        </nav>
-      </header>
+      <Header />
 
       <div className="px-8 py-12 max-w-6xl mx-auto">
         <a
