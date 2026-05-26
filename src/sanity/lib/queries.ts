@@ -45,3 +45,10 @@ export const allCategoriesQuery = groq`
     _id, title, slug, description
   }
 `;
+
+export const artworkForCheckoutQuery = groq`
+  *[_type == "artwork" && slug.current == $slug][0] {
+    _id, title, price, forSale, sold,
+    "imageUrl": mainImage.asset->url
+  }
+`;

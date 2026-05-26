@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import Header from "@/components/Header";
+import BuyButton from "@/components/BuyButton";
 import type { PortableTextBlock } from "@portabletext/types";
 import { client } from "@/sanity/lib/client";
 import { artworkBySlugQuery, allArtworksQuery } from "@/sanity/lib/queries";
@@ -49,12 +51,12 @@ export default async function ArtworkPage({
       <Header />
 
       <div className="px-8 py-12 max-w-6xl mx-auto">
-        <a
+        <Link
           href="/"
           className="text-sm text-stone-400 hover:text-stone-700 transition-colors mb-12 inline-block"
         >
           ← Back
-        </a>
+        </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div className="bg-stone-100">
@@ -98,6 +100,10 @@ export default async function ArtworkPage({
                 </p>
                 <p className="font-serif text-3xl text-stone-900">
                   ${artwork.price.toLocaleString()}
+                </p>
+                <BuyButton slug={artwork.slug.current} price={artwork.price} />
+                <p className="mt-3 text-xs text-stone-500">
+                  Shipping or local pickup arranged after purchase.
                 </p>
               </div>
             )}

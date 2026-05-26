@@ -26,11 +26,16 @@ npm run lint     # ESLint
 
 Copy `.env.local.example` → `.env.local` and fill in values. Required:
 
-| Variable                        | Purpose                                   |
-| ------------------------------- | ----------------------------------------- |
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID (from sanity.io/manage) |
-| `NEXT_PUBLIC_SANITY_DATASET`    | Defaults to `production`                  |
-| `SANITY_API_READ_TOKEN`         | Server-side draft/preview fetching        |
+| Variable                             | Purpose                                                       |
+| ------------------------------------ | ------------------------------------------------------------- |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID`      | Sanity project ID (from sanity.io/manage)                     |
+| `NEXT_PUBLIC_SANITY_DATASET`         | Defaults to `production`                                      |
+| `SANITY_API_READ_TOKEN`              | Server-side draft/preview fetching                            |
+| `SANITY_API_WRITE_TOKEN`             | Server-only — marks artwork `sold` from the Stripe webhook    |
+| `STRIPE_SECRET_KEY`                  | Stripe secret key (sk_test_… until going live)                |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key (pk_test_…)                            |
+| `STRIPE_WEBHOOK_SECRET`              | Signing secret for `/api/webhooks/stripe`                     |
+| `NEXT_PUBLIC_SITE_URL`               | Base URL used to build Stripe success/cancel redirect URLs    |
 
 ## Sanity setup
 
