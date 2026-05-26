@@ -24,10 +24,10 @@ export default function ContactPage() {
             reach out directly by email.
           </p>
           <a
-            href="mailto:dink@example.com"
+            href="mailto:dinknolen@gmail.com"
             className="inline-block text-stone-900 font-medium border-b border-stone-400 pb-0.5 hover:border-stone-900 transition-colors"
           >
-            dink@example.com
+            dinknolen@gmail.com
           </a>
         </div>
       </div>
