@@ -28,7 +28,10 @@ export async function POST(request: Request) {
     const artworkId = session.metadata?.artworkId;
 
     if (artworkId) {
-      await writeClient.patch(artworkId).set({ sold: true }).commit();
+      await writeClient
+        .patch(artworkId)
+        .set({ sold: true, forSale: false })
+        .commit();
     }
   }
 
