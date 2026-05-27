@@ -15,6 +15,9 @@ type Artwork = {
   mainImage?: { asset: object; alt?: string };
   medium?: string;
   year?: number;
+  sold?: boolean;
+  forSale?: boolean;
+  price?: number;
 };
 
 type Category = {
@@ -88,7 +91,7 @@ export default async function GalleryPage({
                 href={`/artwork/${artwork.slug.current}`}
                 className="group"
               >
-                <div className="aspect-[4/5] bg-stone-100 overflow-hidden mb-4">
+                <div className="relative aspect-[4/5] bg-stone-100 overflow-hidden mb-4">
                   {artwork.mainImage ? (
                     <Image
                       src={urlFor(artwork.mainImage)
@@ -103,6 +106,13 @@ export default async function GalleryPage({
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-stone-300 text-sm italic">
                       No image yet
+                    </div>
+                  )}
+                  {artwork.sold && (
+                    <div className="absolute inset-0 bg-stone-900/40 flex items-end">
+                      <span className="m-3 px-2.5 py-1 bg-stone-900 text-stone-100 text-[10px] uppercase tracking-widest">
+                        Sold
+                      </span>
                     </div>
                   )}
                 </div>

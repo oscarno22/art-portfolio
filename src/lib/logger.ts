@@ -15,6 +15,7 @@ type Level = "info" | "warn" | "error";
 
 type SafeMeta = {
   artworkId?: string;
+  artworkTitle?: string;
   slug?: string;
   sessionId?: string;
   eventType?: string;
@@ -29,6 +30,7 @@ function log(level: Level, event: string, meta: SafeMeta = {}) {
   // Pick only the fields we've explicitly declared safe.
   const safe: SafeMeta = {};
   if (meta.artworkId !== undefined) safe.artworkId = meta.artworkId;
+  if (meta.artworkTitle !== undefined) safe.artworkTitle = meta.artworkTitle;
   if (meta.slug !== undefined) safe.slug = meta.slug;
   if (meta.sessionId !== undefined) safe.sessionId = meta.sessionId;
   if (meta.eventType !== undefined) safe.eventType = meta.eventType;

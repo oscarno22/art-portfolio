@@ -1,11 +1,69 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import type Stripe from "stripe";
+import { Resend } from "resend";
 import { getStripe } from "@/lib/stripe";
 import { logger } from "@/lib/logger";
 import { writeClient } from "@/sanity/lib/writeClient";
 
 export const runtime = "nodejs";
+
+// Lazily instantiated so the module loads during build without the env var.
+let _resend: Resend | null = null;
+function getResend(): Resend {
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY!);
+  return _resend;
+}
+
+async function sendSaleNotification(
+  session: Stripe.Checkout.Session,
+  artworkTitle: string,
+  slug: string | undefined
+) {
+  const artistEmail = process.env.ARTIST_EMAIL;
+  if (!artistEmail || !process.env.RESEND_API_KEY) {
+    logger.warn("webhook.email_skipped_missing_config");
+    return;
+  }
+
+  const amount = session.amount_total ? session.amount_total / 100 : null;
+  const buyerEmail = session.customer_details?.email ?? "unknown";
+  const buyerName = session.customer_details?.name ?? "unknown";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
+  const artworkUrl = slug ? `${siteUrl}/artwork/${slug}` : siteUrl;
+
+  const priceDisplay = amount != null ? `$${amount.toLocaleString("en-US")}` : "(unknown price)";
+
+  try {
+    const { error } = await getResend().emails.send({
+      from: "Dink's Gallery <onboarding@resend.dev>",
+      to: artistEmail,
+      subject: `🎨 "${artworkTitle}" just sold for ${priceDisplay}`,
+      html: `
+        <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #1c1917;">
+          <h1 style="font-size: 22px; margin: 0 0 24px;">A piece sold!</h1>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+            <tr><td style="padding: 8px 0; border-bottom: 1px solid #e7e5e4; color: #78716c; font-size: 13px; width: 120px;">Artwork</td><td style="padding: 8px 0; border-bottom: 1px solid #e7e5e4; font-size: 14px;">${artworkTitle}</td></tr>
+            <tr><td style="padding: 8px 0; border-bottom: 1px solid #e7e5e4; color: #78716c; font-size: 13px;">Price</td><td style="padding: 8px 0; border-bottom: 1px solid #e7e5e4; font-size: 14px;">${priceDisplay}</td></tr>
+            <tr><td style="padding: 8px 0; border-bottom: 1px solid #e7e5e4; color: #78716c; font-size: 13px;">Buyer</td><td style="padding: 8px 0; border-bottom: 1px solid #e7e5e4; font-size: 14px;">${buyerName} (${buyerEmail})</td></tr>
+          </table>
+          <p style="font-size: 13px; color: #78716c; margin: 0 0 8px;">
+            The piece has been marked as sold on the site automatically.
+          </p>
+          <a href="${artworkUrl}" style="font-size: 13px; color: #44403c;">View artwork →</a>
+        </div>
+      `,
+    });
+    if (error) {
+      logger.error("webhook.email_failed", { error: error.message, artworkTitle });
+    } else {
+      logger.info("webhook.email_sent", { artworkTitle });
+    }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    logger.error("webhook.email_exception", { error: message, artworkTitle: artworkTitle });
+  }
+}
 
 export async function POST(request: Request) {
   const signature = request.headers.get("stripe-signature");
@@ -32,6 +90,7 @@ export async function POST(request: Request) {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     const artworkId = session.metadata?.artworkId;
+    const artworkTitle = session.metadata?.title ?? "Untitled";
     const slug = session.metadata?.slug;
 
     logger.info("webhook.checkout_completed", {
@@ -65,6 +124,9 @@ export async function POST(request: Request) {
       // Return 500 so Stripe retries the webhook.
       return new Response("Sanity patch failed", { status: 500 });
     }
+
+    // Send seller notification email (non-fatal — don't block the response).
+    await sendSaleNotification(session, artworkTitle, slug);
 
     if (slug) {
       revalidatePath(`/artwork/${slug}`);

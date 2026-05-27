@@ -76,7 +76,11 @@ export async function POST(request: Request) {
       metadata: {
         artworkId: artwork._id,
         slug,
+        title: artwork.title,
       },
+      // Stripe collects the buyer's email during checkout and sends them a receipt
+      // automatically if "Successful payments" email is enabled in the Stripe Dashboard
+      // (Dashboard → Settings → Emails).
       success_url: `${siteUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/artwork/${slug}`,
     });
