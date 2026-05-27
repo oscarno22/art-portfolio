@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import DonateForm from "@/components/DonateForm";
 
 export default function ContactPage() {
   return (
@@ -24,6 +25,17 @@ export default function ContactPage() {
           >
             dinknolen@gmail.com
           </a>
+        </div>
+
+        <div className="mt-16 pt-12 border-t border-stone-200">
+          <p className="text-xs uppercase tracking-widest text-stone-400 mb-4">
+            Support the work
+          </p>
+          <p className="text-stone-700 leading-relaxed mb-6">
+            If you&apos;d like to support Dink&apos;s practice directly, a
+            contribution of any size is deeply appreciated.
+          </p>
+          <DonateForm />
         </div>
       </div>
     </main>
