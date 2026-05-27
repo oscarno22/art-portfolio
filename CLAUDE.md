@@ -36,6 +36,7 @@ Copy `.env.local.example` → `.env.local` and fill in values. Required:
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key (pk*test*…)                         |
 | `STRIPE_WEBHOOK_SECRET`              | Signing secret for `/api/webhooks/stripe`                  |
 | `NEXT_PUBLIC_SITE_URL`               | Base URL used to build Stripe success/cancel redirect URLs |
+| `SANITY_REVALIDATE_SECRET`           | Shared secret for the Sanity → `/api/revalidate` webhook   |
 
 ## Sanity setup
 
