@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { writeClient } from "@/sanity/lib/writeClient";
@@ -32,6 +33,13 @@ export async function POST(request: Request) {
         .patch(artworkId)
         .set({ sold: true, forSale: false })
         .commit();
+
+      const slug = session.metadata?.slug;
+      if (slug) {
+        revalidatePath(`/artwork/${slug}`);
+        revalidatePath("/");
+        revalidatePath("/gallery");
+      }
     }
   }
 

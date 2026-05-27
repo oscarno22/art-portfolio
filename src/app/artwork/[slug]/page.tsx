@@ -108,7 +108,7 @@ export default async function ArtworkPage({
               </div>
             )}
 
-            {artwork.forSale && artwork.sold && (
+            {artwork.sold && (
               <div className="border-t border-stone-200 pt-6">
                 <p className="text-xs uppercase tracking-widest text-stone-400">
                   Sold
