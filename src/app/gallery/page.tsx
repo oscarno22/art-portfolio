@@ -12,7 +12,10 @@ type Artwork = {
   _id: string;
   title: string;
   slug: { current: string };
-  mainImage?: { asset: object; alt?: string };
+  mainImage?: {
+    asset: { _id: string; metadata: { dimensions: { width: number; height: number } } };
+    alt?: string;
+  };
   medium?: string;
   year?: number;
   sold?: boolean;
@@ -84,46 +87,47 @@ export default async function GalleryPage({
             No works in this category yet.
           </p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {artworks.map((artwork) => (
-              <a
-                key={artwork._id}
-                href={`/artwork/${artwork.slug.current}`}
-                className="group"
-              >
-                <div className="relative aspect-[4/5] bg-stone-100 overflow-hidden mb-4">
-                  {artwork.mainImage ? (
-                    <Image
-                      src={urlFor(artwork.mainImage)
-                        .width(600)
-                        .height(750)
-                        .url()}
-                      alt={artwork.mainImage.alt ?? artwork.title}
-                      width={600}
-                      height={750}
-                      className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-stone-300 text-sm italic">
-                      No image yet
-                    </div>
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-x-8">
+            {artworks.map((artwork) => {
+              const w = artwork.mainImage?.asset?.metadata?.dimensions?.width ?? 600;
+              const h = artwork.mainImage?.asset?.metadata?.dimensions?.height ?? 600;
+              return (
+                <a
+                  key={artwork._id}
+                  href={`/artwork/${artwork.slug.current}`}
+                  className="group block break-inside-avoid mb-8"
+                >
+                  <div className="relative bg-stone-100 overflow-hidden mb-3">
+                    {artwork.mainImage ? (
+                      <Image
+                        src={urlFor(artwork.mainImage).width(700).url()}
+                        alt={artwork.mainImage.alt ?? artwork.title}
+                        width={w}
+                        height={h}
+                        className="w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="aspect-square flex items-center justify-center text-stone-300 text-sm italic">
+                        No image yet
+                      </div>
+                    )}
+                    {artwork.sold && (
+                      <div className="absolute inset-0 bg-stone-900/40 flex items-end">
+                        <span className="m-3 px-2.5 py-1 bg-stone-900 text-stone-100 text-[10px] uppercase tracking-widest">
+                          Sold
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <p className="font-medium text-stone-900">{artwork.title}</p>
+                  {(artwork.medium || artwork.year) && (
+                    <p className="text-sm text-stone-500 mt-0.5">
+                      {[artwork.medium, artwork.year].filter(Boolean).join(", ")}
+                    </p>
                   )}
-                  {artwork.sold && (
-                    <div className="absolute inset-0 bg-stone-900/40 flex items-end">
-                      <span className="m-3 px-2.5 py-1 bg-stone-900 text-stone-100 text-[10px] uppercase tracking-widest">
-                        Sold
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <p className="font-medium text-stone-900">{artwork.title}</p>
-                {(artwork.medium || artwork.year) && (
-                  <p className="text-sm text-stone-500 mt-0.5">
-                    {[artwork.medium, artwork.year].filter(Boolean).join(", ")}
-                  </p>
-                )}
-              </a>
-            ))}
+                </a>
+              );
+            })}
           </div>
         )}
       </div>

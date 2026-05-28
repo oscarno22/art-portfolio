@@ -1,19 +1,21 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import Header from "@/components/Header";
 import BuyButton from "@/components/BuyButton";
+import ArtworkImage from "@/components/ArtworkImage";
 import type { PortableTextBlock } from "@portabletext/types";
 import { client } from "@/sanity/lib/client";
 import { artworkBySlugQuery, allArtworksQuery } from "@/sanity/lib/queries";
-import { urlFor } from "@/sanity/lib/image";
 
 type Artwork = {
   _id: string;
   title: string;
   slug: { current: string };
-  mainImage?: { asset: object; alt?: string };
+  mainImage?: {
+    asset: { _id: string; metadata: { dimensions: { width: number; height: number } } };
+    alt?: string;
+  };
   medium?: string;
   dimensions?: string;
   year?: number;
@@ -59,18 +61,16 @@ export default async function ArtworkPage({
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          <div className="bg-stone-100">
+          <div>
             {artwork.mainImage ? (
-              <Image
-                src={urlFor(artwork.mainImage).width(900).url()}
-                alt={artwork.mainImage.alt ?? artwork.title}
-                width={900}
-                height={900}
-                className="w-full h-auto object-contain"
-                priority
+              <ArtworkImage
+                image={artwork.mainImage}
+                title={artwork.title}
+                width={artwork.mainImage.asset?.metadata?.dimensions?.width ?? 900}
+                height={artwork.mainImage.asset?.metadata?.dimensions?.height ?? 900}
               />
             ) : (
-              <div className="aspect-square flex items-center justify-center text-stone-300 text-sm italic">
+              <div className="aspect-square bg-stone-100 flex items-center justify-center text-stone-300 text-sm italic">
                 No image yet
               </div>
             )}

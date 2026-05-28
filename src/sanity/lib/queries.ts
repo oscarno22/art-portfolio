@@ -4,7 +4,7 @@ export const artworkFields = groq`
   _id,
   title,
   slug,
-  mainImage { ..., asset-> },
+  mainImage { ..., asset->{ _id, metadata { dimensions { width, height } } } },
   medium,
   dimensions,
   year,
