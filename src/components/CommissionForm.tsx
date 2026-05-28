@@ -4,10 +4,10 @@ import { useState } from "react";
 
 const BUDGETS = [
   "Not sure yet",
-  "Under $500",
+  "Under $200",
+  "$200 – $500",
   "$500 – $1,000",
-  "$1,000 – $2,500",
-  "$2,500+",
+  "$1,000+",
 ];
 
 const inputClass =
