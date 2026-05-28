@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import DonateForm from "@/components/DonateForm";
+import CommissionForm from "@/components/CommissionForm";
 
 export default function ContactPage() {
   return (
@@ -25,6 +26,17 @@ export default function ContactPage() {
           >
             dinknolen@gmail.com
           </a>
+        </div>
+
+        <div className="mt-16 pt-12 border-t border-stone-200">
+          <p className="text-xs uppercase tracking-widest text-stone-400 mb-4">
+            Commission a piece
+          </p>
+          <p className="text-stone-700 leading-relaxed mb-6">
+            Interested in a custom work? Share what you have in mind and Dink
+            will be in touch to discuss.
+          </p>
+          <CommissionForm />
         </div>
 
         <div className="mt-16 pt-12 border-t border-stone-200">
