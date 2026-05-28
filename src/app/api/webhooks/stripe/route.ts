@@ -32,7 +32,8 @@ async function sendSaleNotification(
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
   const artworkUrl = slug ? `${siteUrl}/artwork/${slug}` : siteUrl;
 
-  const priceDisplay = amount != null ? `$${amount.toLocaleString("en-US")}` : "(unknown price)";
+  const priceDisplay =
+    amount != null ? `$${amount.toLocaleString("en-US")}` : "(unknown price)";
 
   try {
     const { error } = await getResend().emails.send({
@@ -55,13 +56,19 @@ async function sendSaleNotification(
       `,
     });
     if (error) {
-      logger.error("webhook.email_failed", { error: error.message, artworkTitle });
+      logger.error("webhook.email_failed", {
+        error: error.message,
+        artworkTitle,
+      });
     } else {
       logger.info("webhook.email_sent", { artworkTitle });
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
-    logger.error("webhook.email_exception", { error: message, artworkTitle: artworkTitle });
+    logger.error("webhook.email_exception", {
+      error: message,
+      artworkTitle: artworkTitle,
+    });
   }
 }
 

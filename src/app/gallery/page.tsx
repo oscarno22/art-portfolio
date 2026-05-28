@@ -13,7 +13,10 @@ type Artwork = {
   title: string;
   slug: { current: string };
   mainImage?: {
-    asset: { _id: string; metadata: { dimensions: { width: number; height: number } } };
+    asset: {
+      _id: string;
+      metadata: { dimensions: { width: number; height: number } };
+    };
     alt?: string;
   };
   medium?: string;
@@ -89,8 +92,10 @@ export default async function GalleryPage({
         ) : (
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-x-8">
             {artworks.map((artwork) => {
-              const w = artwork.mainImage?.asset?.metadata?.dimensions?.width ?? 600;
-              const h = artwork.mainImage?.asset?.metadata?.dimensions?.height ?? 600;
+              const w =
+                artwork.mainImage?.asset?.metadata?.dimensions?.width ?? 600;
+              const h =
+                artwork.mainImage?.asset?.metadata?.dimensions?.height ?? 600;
               return (
                 <a
                   key={artwork._id}
@@ -122,7 +127,9 @@ export default async function GalleryPage({
                   <p className="font-medium text-stone-900">{artwork.title}</p>
                   {(artwork.medium || artwork.year) && (
                     <p className="text-sm text-stone-500 mt-0.5">
-                      {[artwork.medium, artwork.year].filter(Boolean).join(", ")}
+                      {[artwork.medium, artwork.year]
+                        .filter(Boolean)
+                        .join(", ")}
                     </p>
                   )}
                 </a>

@@ -13,7 +13,10 @@ type Artwork = {
   title: string;
   slug: { current: string };
   mainImage?: {
-    asset: { _id: string; metadata: { dimensions: { width: number; height: number } } };
+    asset: {
+      _id: string;
+      metadata: { dimensions: { width: number; height: number } };
+    };
     alt?: string;
   };
   medium?: string;
@@ -66,8 +69,12 @@ export default async function ArtworkPage({
               <ArtworkImage
                 image={artwork.mainImage}
                 title={artwork.title}
-                width={artwork.mainImage.asset?.metadata?.dimensions?.width ?? 900}
-                height={artwork.mainImage.asset?.metadata?.dimensions?.height ?? 900}
+                width={
+                  artwork.mainImage.asset?.metadata?.dimensions?.width ?? 900
+                }
+                height={
+                  artwork.mainImage.asset?.metadata?.dimensions?.height ?? 900
+                }
               />
             ) : (
               <div className="aspect-square bg-stone-100 flex items-center justify-center text-stone-300 text-sm italic">

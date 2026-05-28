@@ -101,6 +101,9 @@ export async function POST(request: Request) {
       artworkId: artwork._id,
       error: message,
     });
-    return NextResponse.json({ error: "Checkout could not start" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Checkout could not start" },
+      { status: 500 }
+    );
   }
 }

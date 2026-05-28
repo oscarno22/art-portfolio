@@ -13,8 +13,8 @@ export default function DonateSuccessPage() {
           Your support means a lot.
         </h1>
         <p className="text-stone-700 leading-relaxed mb-10">
-          A receipt is on its way to your email. Every contribution goes directly
-          toward the work — thank you for being a part of it.
+          A receipt is on its way to your email. Every contribution goes
+          directly toward the work — thank you for being a part of it.
         </p>
         <Link
           href="/gallery"

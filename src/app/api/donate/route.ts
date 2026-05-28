@@ -50,7 +50,10 @@ export async function POST(request: Request) {
       cancel_url: `${siteUrl}/contact`,
     });
 
-    logger.info("donate.session_created", { amountTotal: amount, currency: "usd" });
+    logger.info("donate.session_created", {
+      amountTotal: amount,
+      currency: "usd",
+    });
 
     return NextResponse.json({ url: session.url });
   } catch (err) {
