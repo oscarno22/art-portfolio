@@ -2,20 +2,34 @@
 
 import { useState } from "react";
 
-const BUDGETS = ["Not sure yet", "Under $500", "$500 – $1,000", "$1,000 – $2,500", "$2,500+"];
+const BUDGETS = [
+  "Not sure yet",
+  "Under $500",
+  "$500 – $1,000",
+  "$1,000 – $2,500",
+  "$2,500+",
+];
 
 const inputClass =
   "w-full px-3 py-2.5 border border-stone-300 text-stone-900 text-sm placeholder:text-stone-400 focus:outline-none focus:border-stone-700 bg-white";
 
 export default function CommissionForm() {
-  const [fields, setFields] = useState({ name: "", email: "", description: "", budget: "" });
+  const [fields, setFields] = useState({
+    name: "",
+    email: "",
+    description: "",
+    budget: "",
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
 
   function set(key: keyof typeof fields) {
-    return (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-      setFields((f) => ({ ...f, [key]: e.target.value }));
+    return (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >
+    ) => setFields((f) => ({ ...f, [key]: e.target.value }));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -92,7 +106,9 @@ export default function CommissionForm() {
         >
           <option value="">Select a range</option>
           {BUDGETS.map((b) => (
-            <option key={b} value={b}>{b}</option>
+            <option key={b} value={b}>
+              {b}
+            </option>
           ))}
         </select>
       </div>

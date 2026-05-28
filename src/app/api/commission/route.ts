@@ -29,11 +29,17 @@ export async function POST(request: Request) {
   const { name, email, description, budget } = body;
 
   if (
-    typeof name !== "string" || name.trim().length === 0 ||
-    typeof email !== "string" || !email.includes("@") ||
-    typeof description !== "string" || description.trim().length === 0
+    typeof name !== "string" ||
+    name.trim().length === 0 ||
+    typeof email !== "string" ||
+    !email.includes("@") ||
+    typeof description !== "string" ||
+    description.trim().length === 0
   ) {
-    return NextResponse.json({ error: "Please fill in all required fields." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Please fill in all required fields." },
+      { status: 400 }
+    );
   }
 
   const artistEmail = process.env.ARTIST_EMAIL;
@@ -42,7 +48,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const budgetLine = budget ? `<p><strong>Budget:</strong> ${esc(budget)}</p>` : "";
+  const budgetLine = budget
+    ? `<p><strong>Budget:</strong> ${esc(budget)}</p>`
+    : "";
 
   try {
     await getResend().emails.send({
@@ -69,6 +77,9 @@ export async function POST(request: Request) {
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     logger.error("commission.send_failed", { error: message });
-    return NextResponse.json({ error: "Could not send your message. Please try again." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Could not send your message. Please try again." },
+      { status: 500 }
+    );
   }
 }
