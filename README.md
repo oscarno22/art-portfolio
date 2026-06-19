@@ -10,11 +10,15 @@ An artist portfolio and e-commerce site for a Charlotte, NC mixed-media/painting
 - **Sanity.io** — CMS with embedded Studio at `/studio`
 - **Stripe** — Checkout Sessions + webhook to mark artwork as sold
 
+This site runs at **$0/month** — see [COSTS.md](COSTS.md) for the per-service breakdown and the
+one gotcha (Sanity member roles) to watch when the trial converts to the Free plan.
+
 ## Architecture
 
 ![Architecture diagram](architecture.png)
 
 Key data flows:
+
 1. Server Components fetch published artworks from Sanity CDN (read-only client)
 2. The embedded Sanity Studio (`/studio`) manages artwork documents
 3. Sanity webhooks hit `/api/revalidate` to trigger ISR when content changes
@@ -30,17 +34,17 @@ npm run dev                         # localhost:3000, Studio at /studio
 
 ## Environment Variables
 
-| Variable | Purpose |
-|---|---|
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID |
-| `NEXT_PUBLIC_SANITY_DATASET` | Defaults to `production` |
-| `SANITY_API_READ_TOKEN` | Server-side draft/preview fetching |
-| `SANITY_API_WRITE_TOKEN` | Marks artwork `sold` from Stripe webhook |
-| `STRIPE_SECRET_KEY` | Stripe secret key |
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key |
-| `STRIPE_WEBHOOK_SECRET` | Signing secret for `/api/webhooks/stripe` |
-| `NEXT_PUBLIC_SITE_URL` | Base URL for Stripe redirect URLs |
-| `SANITY_REVALIDATE_SECRET` | Shared secret for Sanity → `/api/revalidate` webhook |
+| Variable                             | Purpose                                              |
+| ------------------------------------ | ---------------------------------------------------- |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID`      | Sanity project ID                                    |
+| `NEXT_PUBLIC_SANITY_DATASET`         | Defaults to `production`                             |
+| `SANITY_API_READ_TOKEN`              | Server-side draft/preview fetching                   |
+| `SANITY_API_WRITE_TOKEN`             | Marks artwork `sold` from Stripe webhook             |
+| `STRIPE_SECRET_KEY`                  | Stripe secret key                                    |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key                               |
+| `STRIPE_WEBHOOK_SECRET`              | Signing secret for `/api/webhooks/stripe`            |
+| `NEXT_PUBLIC_SITE_URL`               | Base URL for Stripe redirect URLs                    |
+| `SANITY_REVALIDATE_SECRET`           | Shared secret for Sanity → `/api/revalidate` webhook |
 
 ## Commands
 
