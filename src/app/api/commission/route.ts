@@ -59,15 +59,15 @@ export async function POST(request: Request) {
       replyTo: email.trim(),
       subject: `Commission inquiry from ${esc(name.trim())}`,
       html: `
-        <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #1c1917;">
+        <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #10132E;">
           <h1 style="font-size: 22px; margin: 0 0 24px;">New commission inquiry</h1>
           <p><strong>Name:</strong> ${esc(name.trim())}</p>
           <p><strong>Email:</strong> ${esc(email.trim())}</p>
           ${budgetLine}
-          <hr style="border: none; border-top: 1px solid #e7e5e4; margin: 20px 0;" />
+          <hr style="border: none; border-top: 1px solid #E4E0EE; margin: 20px 0;" />
           <p style="white-space: pre-wrap;">${esc(description.trim())}</p>
-          <hr style="border: none; border-top: 1px solid #e7e5e4; margin: 20px 0;" />
-          <p style="font-size: 13px; color: #78716c;">Reply directly to this email to respond to ${esc(name.trim())}.</p>
+          <hr style="border: none; border-top: 1px solid #E4E0EE; margin: 20px 0;" />
+          <p style="font-size: 13px; color: #1E2456;">Reply directly to this email to respond to ${esc(name.trim())}.</p>
         </div>
       `,
     });

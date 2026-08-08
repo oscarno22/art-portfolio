@@ -1,6 +1,6 @@
 # Art Portfolio
 
-An artist portfolio and e-commerce site for a Charlotte, NC mixed-media/painting artist with an "Appalachian low-country punk" aesthetic. Built to display work now, sell it later (Phase 2).
+An artist portfolio and e-commerce site for a Matthews, NC mixed-media/painting artist with an "Appalachian low-country punk" aesthetic. Built to display work now, sell it later (Phase 2).
 
 ## Stack
 
@@ -19,10 +19,10 @@ one gotcha (Sanity member roles) to watch when the trial converts to the Free pl
 
 Key data flows:
 
-1. Server Components fetch published artworks from Sanity CDN (read-only client)
+1. Server Components fetch published artworks via `sanityFetch` (Sanity Live Content API), so Studio edits appear on the site without a redeploy or refresh
 2. The embedded Sanity Studio (`/studio`) manages artwork documents
-3. Sanity webhooks hit `/api/revalidate` to trigger ISR when content changes
-4. Stripe Checkout Sessions handle purchases; Stripe webhooks hit `/api/webhooks/stripe` to mark artwork `sold: true` via a server-only write token
+3. Sanity webhooks hit `/api/revalidate` as a fallback if a visitor's live connection drops
+4. Stripe Checkout Sessions handle purchases; Stripe webhooks hit `/api/webhooks/stripe` to set artwork `status: "sold"` via a server-only write token
 
 ## Getting Started
 

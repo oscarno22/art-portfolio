@@ -1,6 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import {
+  errorClass,
+  inputClass,
+  pillClass,
+  primaryButtonClass,
+} from "./styles";
 
 const PRESETS = [10, 25, 50];
 
@@ -48,11 +54,7 @@ export default function DonateForm() {
             key={preset}
             type="button"
             onClick={() => setAmount(String(preset))}
-            className={`px-4 py-1.5 text-xs uppercase tracking-widest border transition-colors ${
-              amount === String(preset)
-                ? "border-stone-900 text-stone-900"
-                : "border-stone-300 text-stone-400 hover:border-stone-500 hover:text-stone-700"
-            }`}
+            className={pillClass(amount === String(preset))}
           >
             ${preset}
           </button>
@@ -62,7 +64,7 @@ export default function DonateForm() {
       {/* Custom amount input */}
       <div className="flex items-stretch gap-3">
         <div className="relative flex-1 max-w-[160px]">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-sm select-none">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-navy/50 text-sm select-none z-10">
             $
           </span>
           <input
@@ -72,19 +74,19 @@ export default function DonateForm() {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Other"
-            className="w-full pl-7 pr-3 py-2.5 border border-stone-300 text-stone-900 text-sm placeholder:text-stone-400 focus:outline-none focus:border-stone-700 bg-white"
+            className={`${inputClass} pl-7`}
           />
         </div>
         <button
           type="submit"
           disabled={loading || !amount}
-          className="px-6 py-2.5 bg-stone-900 text-stone-100 text-xs uppercase tracking-widest hover:bg-stone-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className={primaryButtonClass}
         >
           {loading ? "Redirecting…" : "Donate"}
         </button>
       </div>
 
-      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      {error && <p className={`mt-3 ${errorClass}`}>{error}</p>}
     </form>
   );
 }

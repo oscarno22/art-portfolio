@@ -41,17 +41,17 @@ async function sendSaleNotification(
       to: artistEmail,
       subject: `🎨 "${artworkTitle}" just sold for ${priceDisplay}`,
       html: `
-        <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #1c1917;">
+        <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #10132E;">
           <h1 style="font-size: 22px; margin: 0 0 24px;">A piece sold!</h1>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
-            <tr><td style="padding: 8px 0; border-bottom: 1px solid #e7e5e4; color: #78716c; font-size: 13px; width: 120px;">Artwork</td><td style="padding: 8px 0; border-bottom: 1px solid #e7e5e4; font-size: 14px;">${artworkTitle}</td></tr>
-            <tr><td style="padding: 8px 0; border-bottom: 1px solid #e7e5e4; color: #78716c; font-size: 13px;">Price</td><td style="padding: 8px 0; border-bottom: 1px solid #e7e5e4; font-size: 14px;">${priceDisplay}</td></tr>
-            <tr><td style="padding: 8px 0; border-bottom: 1px solid #e7e5e4; color: #78716c; font-size: 13px;">Buyer</td><td style="padding: 8px 0; border-bottom: 1px solid #e7e5e4; font-size: 14px;">${buyerName} (${buyerEmail})</td></tr>
+            <tr><td style="padding: 8px 0; border-bottom: 1px solid #E4E0EE; color: #1E2456; font-size: 13px; width: 120px;">Artwork</td><td style="padding: 8px 0; border-bottom: 1px solid #E4E0EE; font-size: 14px;">${artworkTitle}</td></tr>
+            <tr><td style="padding: 8px 0; border-bottom: 1px solid #E4E0EE; color: #1E2456; font-size: 13px;">Price</td><td style="padding: 8px 0; border-bottom: 1px solid #E4E0EE; font-size: 14px;">${priceDisplay}</td></tr>
+            <tr><td style="padding: 8px 0; border-bottom: 1px solid #E4E0EE; color: #1E2456; font-size: 13px;">Buyer</td><td style="padding: 8px 0; border-bottom: 1px solid #E4E0EE; font-size: 14px;">${buyerName} (${buyerEmail})</td></tr>
           </table>
-          <p style="font-size: 13px; color: #78716c; margin: 0 0 8px;">
+          <p style="font-size: 13px; color: #1E2456; margin: 0 0 8px;">
             The piece has been marked as sold on the site automatically.
           </p>
-          <a href="${artworkUrl}" style="font-size: 13px; color: #44403c;">View artwork →</a>
+          <a href="${artworkUrl}" style="font-size: 13px; color: #6D3FD1;">View artwork →</a>
         </div>
       `,
     });
@@ -115,10 +115,7 @@ export async function POST(request: Request) {
     }
 
     try {
-      await writeClient
-        .patch(artworkId)
-        .set({ sold: true, forSale: false })
-        .commit();
+      await writeClient.patch(artworkId).set({ status: "sold" }).commit();
 
       logger.info("webhook.artwork_marked_sold", { artworkId, slug });
     } catch (err) {

@@ -1,19 +1,54 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf9f7;
-  --foreground: #1c1917;
+  /* Navy → purple → magenta → teal ramp.
+     Contrast ratios below are against --paper; all text-bearing colors
+     clear WCAG AA (4.5:1). */
+  --paper: #f6f4fa; /* cool off-white page background */
+  --paper-dim: #e4e0ee; /* placeholder tiles, inactive borders */
+  --ink: #10132e; /* near-black navy — body text, outlines  17.9:1 */
+  --navy: #1e2456; /* bands, dark surfaces                  13.5:1 */
+  --purple: #6d3fd1; /* primary accent, links, eyebrows       5.9:1 */
+  --magenta: #c42a9b; /* hot accent — sold, CTA hover, errors  4.7:1 */
+  --teal: #0e7c6f; /* secondary accent — available, price   4.7:1 */
+
+  --background: var(--paper);
+  --foreground: var(--ink);
 }
 
 @theme inline {
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-ink: var(--ink);
+  --color-navy: var(--navy);
+  --color-purple: var(--purple);
+  --color-magenta: var(--magenta);
+  --color-teal: var(--teal);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
   --font-serif: var(--font-playfair), Georgia, serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* Hard marker outline with an offset drop — artwork frames, primary buttons. */
+@utility sharpie {
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 0 var(--ink);
+}
+
+/* Same outline, no shadow — pills, inputs, inline chips. */
+@utility sharpie-flat {
+  border: 2px solid var(--ink);
+}
+
+/* The purple→navy band behind the header and hero. */
+@utility band {
+  background-image: linear-gradient(135deg, var(--purple) 0%, var(--navy) 100%);
 }
