@@ -70,30 +70,50 @@ export const artwork = defineType({
       initialValue: false,
     }),
     defineField({
-      name: "forSale",
-      title: "Available for sale",
-      type: "boolean",
-      initialValue: false,
+      name: "status",
+      title: "Availability",
+      type: "string",
+      description:
+        "Display only = shown in the gallery but not for sale. Sold pieces can be re-listed at any time by switching back to For sale.",
+      options: {
+        list: [
+          { title: "Display only", value: "display" },
+          { title: "For sale", value: "forSale" },
+          { title: "Sold", value: "sold" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "display",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "price",
       title: "Price (USD)",
       type: "number",
-      hidden: ({ document }) => !document?.forSale,
-    }),
-    defineField({
-      name: "sold",
-      title: "Sold",
-      type: "boolean",
-      initialValue: false,
-      hidden: ({ document }) => !document?.forSale,
+      // Stays visible on sold pieces so the price survives a re-list.
+      hidden: ({ document }) => document?.status === "display",
+      validation: (Rule) =>
+        Rule.custom((price, context) =>
+          context.document?.status === "forSale" && !price
+            ? "A price is required before a piece can go up for sale."
+            : true
+        ),
     }),
   ],
   preview: {
     select: {
       title: "title",
       media: "mainImage",
-      subtitle: "medium",
+      medium: "medium",
+      status: "status",
+    },
+    prepare({ title, media, medium, status }) {
+      const label = { forSale: "For sale", sold: "Sold" }[status as string];
+      return {
+        title,
+        media,
+        subtitle: [medium, label].filter(Boolean).join(" · "),
+      };
     },
   },
 });

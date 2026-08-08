@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Header from "@/components/Header";
-import { client } from "@/sanity/lib/client";
+import { sanityFetch } from "@/sanity/lib/live";
 import {
   allArtworksQuery,
   artworksByCategoryQuery,
   allCategoriesQuery,
 } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
+import { pillClass } from "@/components/styles";
 
 type Artwork = {
   _id: string;
@@ -21,8 +22,7 @@ type Artwork = {
   };
   medium?: string;
   year?: number;
-  sold?: boolean;
-  forSale?: boolean;
+  status?: "display" | "forSale" | "sold";
   price?: number;
 };
 
@@ -39,12 +39,15 @@ export default async function GalleryPage({
 }) {
   const { category } = await searchParams;
 
-  const [artworks, categories]: [Artwork[], Category[]] = await Promise.all([
+  const [artworkResult, categoryResult] = await Promise.all([
     category
-      ? client.fetch(artworksByCategoryQuery, { category })
-      : client.fetch(allArtworksQuery),
-    client.fetch(allCategoriesQuery),
+      ? sanityFetch({ query: artworksByCategoryQuery, params: { category } })
+      : sanityFetch({ query: allArtworksQuery }),
+    sanityFetch({ query: allCategoriesQuery }),
   ]);
+
+  const artworks = (artworkResult.data ?? []) as Artwork[];
+  const categories = (categoryResult.data ?? []) as Category[];
 
   return (
     <main>
@@ -52,31 +55,18 @@ export default async function GalleryPage({
 
       <div className="px-8 py-12 max-w-7xl mx-auto">
         <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
-          <p className="text-xs uppercase tracking-widest text-stone-400">
-            Work
-          </p>
+          <p className="text-xs uppercase tracking-widest text-purple">Work</p>
 
           {categories.length > 0 && (
             <div className="flex gap-2 flex-wrap">
-              <a
-                href="/gallery"
-                className={`text-xs uppercase tracking-widest px-4 py-1.5 border transition-colors ${
-                  !category
-                    ? "border-stone-900 text-stone-900"
-                    : "border-stone-300 text-stone-400 hover:border-stone-500 hover:text-stone-700"
-                }`}
-              >
+              <a href="/gallery" className={pillClass(!category)}>
                 All
               </a>
               {categories.map((cat) => (
                 <a
                   key={cat._id}
                   href={`/gallery?category=${cat.slug.current}`}
-                  className={`text-xs uppercase tracking-widest px-4 py-1.5 border transition-colors ${
-                    category === cat.slug.current
-                      ? "border-stone-900 text-stone-900"
-                      : "border-stone-300 text-stone-400 hover:border-stone-500 hover:text-stone-700"
-                  }`}
+                  className={pillClass(category === cat.slug.current)}
                 >
                   {cat.title}
                 </a>
@@ -86,7 +76,7 @@ export default async function GalleryPage({
         </div>
 
         {artworks.length === 0 ? (
-          <p className="text-stone-400 text-center py-24">
+          <p className="text-navy/60 text-center py-24">
             No works in this category yet.
           </p>
         ) : (
@@ -100,9 +90,9 @@ export default async function GalleryPage({
                 <a
                   key={artwork._id}
                   href={`/artwork/${artwork.slug.current}`}
-                  className="group block break-inside-avoid mb-8"
+                  className="group block break-inside-avoid mb-10"
                 >
-                  <div className="relative bg-stone-100 overflow-hidden mb-3">
+                  <div className="sharpie relative bg-paper-dim overflow-hidden mb-3">
                     {artwork.mainImage ? (
                       <Image
                         src={urlFor(artwork.mainImage).width(700).url()}
@@ -112,21 +102,23 @@ export default async function GalleryPage({
                         className="w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"
                       />
                     ) : (
-                      <div className="aspect-square flex items-center justify-center text-stone-300 text-sm italic">
+                      <div className="aspect-square flex items-center justify-center text-navy/40 text-sm italic">
                         No image yet
                       </div>
                     )}
-                    {artwork.sold && (
-                      <div className="absolute inset-0 bg-stone-900/40 flex items-end">
-                        <span className="m-3 px-2.5 py-1 bg-stone-900 text-stone-100 text-[10px] uppercase tracking-widest">
+                    {artwork.status === "sold" && (
+                      <div className="absolute inset-0 bg-ink/50 flex items-end">
+                        <span className="m-3 px-2.5 py-1 bg-magenta text-white text-[10px] uppercase tracking-widest">
                           Sold
                         </span>
                       </div>
                     )}
                   </div>
-                  <p className="font-medium text-stone-900">{artwork.title}</p>
+                  <p className="font-medium text-ink group-hover:text-purple transition-colors">
+                    {artwork.title}
+                  </p>
                   {(artwork.medium || artwork.year) && (
-                    <p className="text-sm text-stone-500 mt-0.5">
+                    <p className="text-sm text-navy/60 mt-0.5">
                       {[artwork.medium, artwork.year]
                         .filter(Boolean)
                         .join(", ")}

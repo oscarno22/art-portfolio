@@ -7,8 +7,8 @@
  * can never leak in accidentally.
  *
  * Safe fields (extend this list deliberately — never add customer details):
- *   artworkId, slug, sessionId, eventType, amountTotal, currency,
- *   paymentStatus, error, statusCode
+ *   artworkId, artworkStatus, slug, sessionId, eventType, amountTotal,
+ *   currency, paymentStatus, error, statusCode
  */
 
 type Level = "info" | "warn" | "error";
@@ -16,6 +16,7 @@ type Level = "info" | "warn" | "error";
 type SafeMeta = {
   artworkId?: string;
   artworkTitle?: string;
+  artworkStatus?: string;
   slug?: string;
   sessionId?: string;
   eventType?: string;
@@ -31,6 +32,7 @@ function log(level: Level, event: string, meta: SafeMeta = {}) {
   const safe: SafeMeta = {};
   if (meta.artworkId !== undefined) safe.artworkId = meta.artworkId;
   if (meta.artworkTitle !== undefined) safe.artworkTitle = meta.artworkTitle;
+  if (meta.artworkStatus !== undefined) safe.artworkStatus = meta.artworkStatus;
   if (meta.slug !== undefined) safe.slug = meta.slug;
   if (meta.sessionId !== undefined) safe.sessionId = meta.sessionId;
   if (meta.eventType !== undefined) safe.eventType = meta.eventType;

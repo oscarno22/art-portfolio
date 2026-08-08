@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
 import { logger } from "@/lib/logger";
-import { client } from "@/sanity/lib/client";
+import { freshClient } from "@/sanity/lib/client";
 import { artworkForCheckoutQuery } from "@/sanity/lib/queries";
 
 export const runtime = "nodejs";
@@ -10,8 +10,7 @@ type CheckoutArtwork = {
   _id: string;
   title: string;
   price?: number;
-  forSale?: boolean;
-  sold?: boolean;
+  status?: "display" | "forSale" | "sold";
   imageUrl?: string;
 };
 
@@ -25,7 +24,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Missing slug" }, { status: 400 });
   }
 
-  const artwork = await client.fetch<CheckoutArtwork | null>(
+  // Deliberately a non-CDN read: a cached `status` could let someone buy a
+  // piece that has already sold.
+  const artwork = await freshClient.fetch<CheckoutArtwork | null>(
     artworkForCheckoutQuery,
     { slug }
   );
@@ -35,10 +36,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Artwork not found" }, { status: 404 });
   }
 
-  if (!artwork.forSale || artwork.sold || !artwork.price) {
+  if (artwork.status !== "forSale" || !artwork.price) {
     logger.warn("checkout.artwork_unavailable", {
       slug,
       artworkId: artwork._id,
+      artworkStatus: artwork.status,
     });
     return NextResponse.json(
       { error: "Artwork is not available for purchase" },

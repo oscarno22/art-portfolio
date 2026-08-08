@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { errorClass } from "./styles";
 
 type Props = {
   slug: string;
@@ -37,11 +38,11 @@ export default function BuyButton({ slug, price }: Props) {
         type="button"
         onClick={handleClick}
         disabled={loading}
-        className="mt-4 w-full sm:w-auto px-8 py-3 bg-stone-900 text-stone-50 text-sm tracking-wide uppercase hover:bg-stone-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="sharpie mt-4 w-full sm:w-auto px-8 py-3 bg-navy text-paper text-sm tracking-wide uppercase hover:bg-magenta transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? "Redirecting…" : `Buy — $${price.toLocaleString()}`}
       </button>
-      {error && <p className="mt-3 text-sm text-red-700">{error}</p>}
+      {error && <p className={`mt-3 ${errorClass}`}>{error}</p>}
     </div>
   );
 }

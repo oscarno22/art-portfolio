@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { client } from "@/sanity/lib/client";
+import { sanityFetch } from "@/sanity/lib/live";
 import { featuredArtworksQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 import Header from "@/components/Header";
@@ -14,40 +14,41 @@ type Artwork = {
 };
 
 export default async function Home() {
-  const artworks: Artwork[] = await client.fetch(featuredArtworksQuery);
+  const { data } = await sanityFetch({ query: featuredArtworksQuery });
+  const artworks = (data ?? []) as Artwork[];
 
   return (
     <main>
       <Header />
 
-      <section className="px-8 pt-24 pb-16 text-center">
-        <p className="text-xs uppercase tracking-widest text-stone-400 mb-5">
-          Charlotte, NC
+      <section className="band border-b-2 border-ink px-8 pt-20 pb-16 text-center">
+        <p className="text-xs uppercase tracking-widest text-paper/70 mb-5">
+          Matthews, NC
         </p>
-        <h1 className="font-serif text-5xl sm:text-6xl text-stone-900 leading-tight max-w-2xl mx-auto">
+        <h1 className="font-serif text-5xl sm:text-6xl text-paper leading-tight max-w-2xl mx-auto">
           From the
           <br />
           heart of the Carolinas
         </h1>
       </section>
 
-      <section id="work" className="px-8 pb-24 max-w-7xl mx-auto">
-        <p className="text-xs uppercase tracking-widest text-stone-400 mb-8">
+      <section id="work" className="px-8 py-20 max-w-7xl mx-auto">
+        <p className="text-xs uppercase tracking-widest text-purple mb-8">
           Featured Work
         </p>
         {artworks.length === 0 ? (
-          <p className="text-stone-400 text-center py-16">
+          <p className="text-navy/60 text-center py-16">
             No featured works yet.
           </p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
             {artworks.map((artwork, index) => (
               <a
                 key={artwork._id}
                 href={`/artwork/${artwork.slug.current}`}
                 className="group"
               >
-                <div className="aspect-[4/5] bg-stone-100 overflow-hidden mb-4">
+                <div className="sharpie aspect-[4/5] bg-paper-dim overflow-hidden mb-4">
                   {artwork.mainImage ? (
                     <Image
                       src={urlFor(artwork.mainImage)
@@ -61,14 +62,16 @@ export default async function Home() {
                       priority={index === 0}
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-stone-300 text-sm italic">
+                    <div className="w-full h-full flex items-center justify-center text-navy/40 text-sm italic">
                       No image yet
                     </div>
                   )}
                 </div>
-                <p className="font-medium text-stone-900">{artwork.title}</p>
+                <p className="font-medium text-ink group-hover:text-purple transition-colors">
+                  {artwork.title}
+                </p>
                 {(artwork.medium || artwork.year) && (
-                  <p className="text-sm text-stone-500 mt-0.5">
+                  <p className="text-sm text-navy/60 mt-0.5">
                     {[artwork.medium, artwork.year].filter(Boolean).join(", ")}
                   </p>
                 )}

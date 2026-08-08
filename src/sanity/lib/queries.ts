@@ -11,9 +11,8 @@ export const artworkFields = groq`
   category->{ title, slug },
   description,
   featured,
-  forSale,
-  price,
-  sold
+  status,
+  price
 `;
 
 export const allArtworksQuery = groq`
@@ -48,7 +47,7 @@ export const allCategoriesQuery = groq`
 
 export const artworkForCheckoutQuery = groq`
   *[_type == "artwork" && slug.current == $slug][0] {
-    _id, title, price, forSale, sold,
+    _id, title, price, status,
     "imageUrl": mainImage.asset->url
   }
 `;

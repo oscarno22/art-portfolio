@@ -30,7 +30,7 @@ export default function ArtworkImage({ image, title, width, height }: Props) {
     <>
       <button
         onClick={open}
-        className="relative block w-full bg-stone-100 cursor-zoom-in group"
+        className="sharpie relative block w-full bg-paper-dim cursor-zoom-in group"
         aria-label="View full size"
       >
         <Image
@@ -42,7 +42,7 @@ export default function ArtworkImage({ image, title, width, height }: Props) {
           priority
         />
         <div className="absolute inset-0 flex items-end justify-end p-3 opacity-0 group-hover:opacity-100 transition-opacity">
-          <span className="bg-stone-900/70 text-stone-100 text-[10px] uppercase tracking-widest px-2 py-1">
+          <span className="bg-ink/80 text-paper text-[10px] uppercase tracking-widest px-2 py-1">
             Expand
           </span>
         </div>
@@ -61,12 +61,14 @@ export default function ArtworkImage({ image, title, width, height }: Props) {
           margin: 0,
           padding: "2rem",
           border: "none",
-          background: "rgba(28, 25, 23, 0.96)",
+          // --ink at 96%. Inline because <dialog> backdrop styling can't be
+          // reached by a Tailwind class here.
+          background: "rgba(16, 19, 46, 0.96)",
         }}
       >
         <button
           onClick={close}
-          className="absolute top-5 right-6 text-stone-400 hover:text-stone-100 text-xs uppercase tracking-widest transition-colors"
+          className="absolute top-5 right-6 text-paper/70 hover:text-paper text-xs uppercase tracking-widest transition-colors"
           aria-label="Close"
         >
           ✕ Close

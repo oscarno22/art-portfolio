@@ -1,6 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import {
+  errorClass,
+  eyebrowClass,
+  inputClass,
+  primaryButtonClass,
+} from "./styles";
 
 const BUDGETS = [
   "Not sure yet",
@@ -10,8 +16,7 @@ const BUDGETS = [
   "$1,000+",
 ];
 
-const inputClass =
-  "w-full px-3 py-2.5 border border-stone-300 text-stone-900 text-sm placeholder:text-stone-400 focus:outline-none focus:border-stone-700 bg-white";
+const labelClass = `block ${eyebrowClass} mb-1.5`;
 
 export default function CommissionForm() {
   const [fields, setFields] = useState({
@@ -58,8 +63,8 @@ export default function CommissionForm() {
   if (sent) {
     return (
       <div className="py-6">
-        <p className="text-stone-900 font-medium mb-1">Message sent.</p>
-        <p className="text-sm text-stone-500">Dink will be in touch soon.</p>
+        <p className="text-ink font-medium mb-1">Message sent.</p>
+        <p className="text-sm text-navy/60">Dink will be in touch soon.</p>
       </div>
     );
   }
@@ -68,8 +73,8 @@ export default function CommissionForm() {
     <form onSubmit={handleSubmit} className="space-y-4 mt-2">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs uppercase tracking-widest text-stone-400 mb-1.5">
-            Name <span className="text-stone-500">*</span>
+          <label className={labelClass}>
+            Name <span className="text-magenta">*</span>
           </label>
           <input
             type="text"
@@ -81,8 +86,8 @@ export default function CommissionForm() {
           />
         </div>
         <div>
-          <label className="block text-xs uppercase tracking-widest text-stone-400 mb-1.5">
-            Email <span className="text-stone-500">*</span>
+          <label className={labelClass}>
+            Email <span className="text-magenta">*</span>
           </label>
           <input
             type="email"
@@ -96,9 +101,7 @@ export default function CommissionForm() {
       </div>
 
       <div>
-        <label className="block text-xs uppercase tracking-widest text-stone-400 mb-1.5">
-          Budget
-        </label>
+        <label className={labelClass}>Budget</label>
         <select
           value={fields.budget}
           onChange={set("budget")}
@@ -114,8 +117,8 @@ export default function CommissionForm() {
       </div>
 
       <div>
-        <label className="block text-xs uppercase tracking-widest text-stone-400 mb-1.5">
-          Tell Dink about the piece <span className="text-stone-500">*</span>
+        <label className={labelClass}>
+          Tell Dink about the piece <span className="text-magenta">*</span>
         </label>
         <textarea
           required
@@ -127,13 +130,9 @@ export default function CommissionForm() {
         />
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className={errorClass}>{error}</p>}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="px-6 py-2.5 bg-stone-900 text-stone-100 text-xs uppercase tracking-widest hover:bg-stone-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-      >
+      <button type="submit" disabled={loading} className={primaryButtonClass}>
         {loading ? "Sending…" : "Send inquiry"}
       </button>
     </form>

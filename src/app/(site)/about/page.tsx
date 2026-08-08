@@ -6,20 +6,20 @@ export default function AboutPage() {
       <Header />
 
       <div className="px-8 py-20 max-w-2xl mx-auto">
-        <p className="text-xs uppercase tracking-widest text-stone-400 mb-5">
+        <p className="text-xs uppercase tracking-widest text-purple mb-5">
           About
         </p>
-        <h1 className="font-serif text-4xl sm:text-5xl text-stone-900 leading-tight mb-12">
+        <h1 className="font-serif text-4xl sm:text-5xl text-ink leading-tight mb-12">
           Dink Nolen III
         </h1>
 
-        <div className="space-y-6 text-stone-700 leading-relaxed">
+        <div className="space-y-6 text-navy/85 leading-relaxed">
           <p>
             Dink Nolen III is a mixed-media and painting artist based in
-            Charlotte, North Carolina — a city that sits at a rare crossroads,
-            close enough to feel the pull of the Appalachian mountains to the
-            west and the Low Country coast to the east. That geography lives in
-            his work.
+            Matthews, North Carolina, just outside Charlotte — a stretch of the
+            state that sits at a rare crossroads, close enough to feel the pull
+            of the Appalachian mountains to the west and the Low Country coast
+            to the east. That geography lives in his work.
           </p>
           <p>
             His practice spans painting, collage, and mixed media, drawing on
@@ -34,8 +34,10 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-stone-200">
-          <p className="text-sm text-stone-400">Charlotte, NC</p>
+        <div className="mt-16 pt-8 border-t-2 border-paper-dim">
+          <p className="text-sm uppercase tracking-widest text-purple">
+            Matthews, NC
+          </p>
         </div>
       </div>
     </main>

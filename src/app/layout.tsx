@@ -14,7 +14,7 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: "Dink Nolen III",
-  description: "Mixed-media and painting from Charlotte, NC.",
+  description: "Mixed-media and painting from Matthews, NC.",
 };
 
 export default function RootLayout({
